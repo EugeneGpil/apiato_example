@@ -1,4 +1,4 @@
-FROM 8.2-fpm-bookworm
+FROM php:8.2-fpm-bookworm
 
 ARG USER_ID=1000
 ARG GROUP_ID=1000
@@ -17,4 +17,19 @@ RUN \
     mkdir /commandhistory && \
     touch /commandhistory/.bash_history && \
     chown -R app:app /commandhistory && \
-    echo "export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" >> "/home/app/.bashrc"
+    echo "export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" >> "/home/app/.bashrc" && \
+    \
+    apt-get update && \
+    apt-get install git --no-install-recommends -y && \
+    \
+    docker-php-ext-install gettext && \
+    \
+    apt-get install --no-install-recommends -y \
+        zlib1g-dev \
+        libzip-dev \
+        unzip && \
+    docker-php-ext-install zip && \
+    \
+    apt-get install libicu-dev --no-install-recommends -y && \
+    docker-php-ext-configure intl && \
+    docker-php-ext-install intl
