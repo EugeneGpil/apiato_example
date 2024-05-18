@@ -32,4 +32,8 @@ RUN \
     \
     apt-get install libicu-dev --no-install-recommends -y && \
     docker-php-ext-configure intl && \
-    docker-php-ext-install intl
+    docker-php-ext-install intl &&\
+    \
+    docker-php-ext-install \
+      pdo_mysql \
+      bcmath
